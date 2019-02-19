@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Fargo Event App</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="username_hint">Username</string>
+    <string name="login_header">Fargo Events App</string>
+    <string name="login_button">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="events_header">Events</string>
+    <string name="invalid_login_text">Incorrect username or password.</string>
+    <string name="logout_action">Logout</string>
+    <string name="event_image">Event Image</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_information">Event information</string>
+</resources>
