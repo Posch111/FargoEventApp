@@ -59,8 +59,10 @@ class EventPageFragment : Fragment() {
         view.eventPage_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.eventPage_toolbar.setNavigationOnClickListener{activity?.onBackPressed()}
 
-        Picasso.get().load(R.drawable.not_found_image).resize(10, 200)
-          .into(view.event_image)
+        Picasso.get().load(R.drawable.not_found_image)
+            .fit()
+            .centerCrop()
+            .into(view.event_image)
 
         // Inflate the layout for this fragment
         return view

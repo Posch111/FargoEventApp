@@ -1,6 +1,7 @@
 package com.example.fargoeventapp
 
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.w3c.dom.Text
+import java.net.URI
 
 /** Event List Page with RecyclerView**/
 class MainActivity : AppCompatActivity() {
@@ -54,9 +56,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun launchMap(view: View){
-        //ToDO launch google maps with event location
         val textView: TextView = view as TextView
-        Toast.makeText(this,"Launching Map!", Toast.LENGTH_SHORT).show()
+        val locationURI = Uri.parse("geo:0,0?q=" + Uri.encode(textView.text.toString()))
+        val mapIntent = Intent(Intent.ACTION_VIEW, locationURI)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        if(mapIntent.resolveActivity(packageManager) != null){
+            startActivity(mapIntent)
+        }
+        else{
+            Toast.makeText(this,"Google Maps app not found!", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
