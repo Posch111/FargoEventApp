@@ -1,20 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".EventFragment">
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/event_page_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+
+    tools:context=".EventPageFragment">
 
 <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/eventPage_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fadingEdgeLength="20dp"
+        android:theme="@style/EventToolbarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/EventToolbarTheme.Popup"
+        app:titleTextColor="@android:color/white"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:id="@+id/event_page_title"
+            android:text="Event Title"
+            android:textSize="20sp"/>
+
+    </android.support.v7.widget.Toolbar>
 
     <ImageView
-            android:src="@drawable/not_found_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/imageView"/>
+        android:id="@+id/event_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/not_found_image"
+        android:contentDescription="@string/event_image_text" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_title"
+        android:text="Event Title"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_time"
+        android:text="12/20/18 4pm - 5:30pm"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_summary"
+        android:text="Event Summary"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="5dp"/>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/location_icon"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-    />
+            android:id="@+id/event_location"
+            android:text="NDSU ECE Building, Fargo, ND"
+            android:textColor="@color/colorPrimary"
+            android:onClick="launchMap"/>
 
-</FrameLayout>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/operator_list_view">
+
+    </ListView>
+
+
+</android.support.v7.widget.LinearLayoutCompat>

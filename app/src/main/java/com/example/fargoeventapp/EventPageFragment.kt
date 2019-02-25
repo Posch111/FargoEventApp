@@ -1,19 +1,33 @@
 package com.example.fargoeventapp
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.fragment_event.*
+import kotlinx.android.synthetic.main.fragment_event.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    const val EVENT_SUMMARY = "Summary"
+    const val EVENT_TITLE = "Title"
+    const val EVENT_DETAILS = "Details"
     const val EVENT_IMAGE = "Image"
     const val EVENT_OPERATORS = "Operators"
+    const val EVENT_ID = "EventID"
+
+    lateinit var title: String
+    lateinit var text: String
+    lateinit var operators: Array<String>
+    lateinit var image: Bitmap
 
 /**
  * A simple [Fragment] subclass.
@@ -24,17 +38,16 @@ import android.view.ViewGroup
  * create an instance of this fragment.
  *
  */
+
 class EventPageFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var eventID: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            eventID = it.getInt(EVENT_ID)
         }
     }
 
@@ -42,8 +55,15 @@ class EventPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_event, container, false)
+        view.eventPage_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        view.eventPage_toolbar.setNavigationOnClickListener{activity?.onBackPressed()}
+
+        Picasso.get().load(R.drawable.not_found_image).resize(10, 200)
+          .into(view.event_image)
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event, container, false)
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -53,11 +73,11 @@ class EventPageFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
+//        if (context is OnFragmentInteractionListener) {
+//            listener = context
+//        } else {
+//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+//        }
     }
 
     override fun onDetach() {
@@ -82,22 +102,14 @@ class EventPageFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EventFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(eventID: Int) =
             EventPageFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putInt(EVENT_ID, eventID)
                 }
             }
     }
+
+
 }

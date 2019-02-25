@@ -7,7 +7,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import org.w3c.dom.Text
 
 /** Event List Page with RecyclerView**/
 class MainActivity : AppCompatActivity() {
@@ -22,9 +26,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.event_toolbar))
-
         eventManager = LinearLayoutManager(this)
-        eventAdapter = EventCardAdapter(testData)
+        eventAdapter = EventCardAdapter(testData, this)
 
         recycler.apply {
             setHasFixedSize(true)
@@ -48,6 +51,12 @@ class MainActivity : AppCompatActivity() {
             } else -> super.onOptionsItemSelected(item)
         }
         return false
+    }
+
+    fun launchMap(view: View){
+        //ToDO launch google maps with event location
+        val textView: TextView = view as TextView
+        Toast.makeText(this,"Launching Map!", Toast.LENGTH_SHORT).show()
     }
 
 }

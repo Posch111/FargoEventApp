@@ -25,6 +25,7 @@
                 android:layout_marginStart="8dp"
                 android:contentDescription="@string/event_image"
                 android:src="@drawable/not_found_image"
+                android:layout_marginBottom="8dp"
                 app:srcCompat="@drawable/not_found_image" />
 
             <TextView
