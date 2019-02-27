@@ -12,8 +12,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import org.w3c.dom.Text
-import java.net.URI
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 /** Event List Page with RecyclerView**/
 class MainActivity : AppCompatActivity() {
@@ -39,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         eventAdapter.notifyDataSetChanged()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        event_toolbar.event_toolbar.visibility = View.VISIBLE
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -48,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         when(item?.itemId){
             R.id.action_logout -> {
                 val logoutIntent = Intent(this, LoginActivity::class.java)
+                logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(logoutIntent)
                 return true
             } else -> super.onOptionsItemSelected(item)

@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="#fffcf5"
-        app:cardCornerRadius="20dp">
+        app:cardBackgroundColor="@color/hue"
+        app:cardCornerRadius="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:layout_toEndOf="@id/eventCardImage"
                 android:text="@string/event_name"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:id="@+id/eventCardInfo"

@@ -42,10 +42,10 @@ class EventCardAdapter(private val eventData: Array<String>, val activity: AppCo
 //        holder.eventCard.eventCardTitle.text = "Event Title"
 //        holder.eventCard.eventCardInfo.text = "event subtitle"
 
-        val roundedBitmapDrawable =
 
         Picasso.get().load(R.drawable.not_found_image)
-            .resize(50, 50)
+            .centerCrop()
+            .fit()
             .into(holder.eventCard.eventCardImage)
 
         holder.title.text = eventData[position]

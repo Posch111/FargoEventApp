@@ -14,5 +14,5 @@
     <string name="event_name">Event Name</string>
     <string name="event_information">Event information</string>
     <string name="event_image_text">Event Image</string>
-    <string name="operators_header_text">Operators:</string>
+    <string name="speakers_header_text">Speakers:</string>
 </resources>

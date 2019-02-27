@@ -19,6 +19,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
     }
 
+    override fun onBackPressed() {
+        System.exit(0)
+    }
+
     fun onLogin(view: View?){
         //test
         mLoginValid = userNameText.text.toString() == "bob"
