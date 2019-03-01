@@ -20,22 +20,23 @@ class MainActivity : AppCompatActivity() {
     val DEBUG_TAG = "MAINACTIVITY"
     val LOGOUT_TAG = "MainActivity.Logout"
 
-    private lateinit var eventAdapter: RecyclerView.Adapter<*>
-    private lateinit var eventManager: RecyclerView.LayoutManager
+    private lateinit var eventListAdapter: RecyclerView.Adapter<*>
+    private lateinit var eventListManager: RecyclerView.LayoutManager
+    private lateinit var eventAPI: EventAPI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.event_toolbar))
-        eventManager = LinearLayoutManager(this)
-        eventAdapter = EventCardAdapter(testData, this)
+        eventListManager = LinearLayoutManager(this)
+        eventListAdapter = EventCardAdapter(testData, this)
 
         recycler.apply {
             setHasFixedSize(true)
-            layoutManager = eventManager
-            adapter = eventAdapter
+            layoutManager = eventListManager
+            adapter = eventListAdapter
         }
-        eventAdapter.notifyDataSetChanged()
+        eventListAdapter.notifyDataSetChanged()
     }
 
     override fun onBackPressed() {
