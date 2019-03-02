@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        app:cardElevation="2dp"
         app:cardBackgroundColor="@color/hue"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,11 +21,13 @@
                 android:id="@+id/eventCardImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="8dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:contentDescription="@string/event_image"
                 android:src="@drawable/not_found_image"
-                android:layout_marginBottom="8dp"
                 app:srcCompat="@drawable/not_found_image" />
 
             <TextView
@@ -33,23 +35,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/eventCardImage"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="5dp"
                 android:layout_toEndOf="@id/eventCardImage"
+                android:maxLength="80"
                 android:text="@string/event_name"
-                android:textSize="20sp"
-                android:textColor="@android:color/black"/>
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/eventCardInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_below="@id/eventCardTitle"
-                android:layout_marginTop="1dp"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="39dp"
+                android:layout_marginEnd="12dp"
+                android:layout_alignBottom="@id/eventCardImage"
+                android:layout_toEndOf="@+id/eventCardImage"
+                android:maxLength="50"
                 android:text="@string/event_information"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
         </RelativeLayout>
 

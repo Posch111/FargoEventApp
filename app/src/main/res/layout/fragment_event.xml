@@ -8,6 +8,8 @@
     android:layout_height="match_parent"
     android:background="@color/hue"
     android:orientation="vertical"
+    android:isScrollContainer="true"
+    android:scrollbars="vertical"
     tools:context="MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -25,85 +27,106 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:id="@+id/event_page_title"
-            android:text="Event Title"
+            android:maxLength="50"
+            android:text="@string/event_title"
             android:gravity="center_horizontal"
             android:textSize="18sp"/>
 
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/event_image"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:src="@drawable/not_found_image"
-        android:contentDescription="@string/event_image_text"
-        android:background="@android:color/black"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/event_title"
-        android:text="Event Title"
-        android:textColor="@android:color/black"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"/>
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/event_time"
-        android:text="12/20/18 4pm - 5:30pm"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="30dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/event_summary"
-        android:text="Event Summary"
-        android:textColor="@android:color/black"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="5dp"/>
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <android.support.v7.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/location_icon"
-            android:layout_marginStart="15dp"/>
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/event_location"
-            android:text="NDSU ECE Building, Fargo, ND"
-            android:textColor="@color/colorPrimary"
-            android:onClick="launchMap"/>
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/event_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/not_found_image"
+                android:contentDescription="@string/event_image_text"
+                android:background="@color/hue"/>
 
-    </android.support.v7.widget.LinearLayoutCompat>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/event_title"
+                android:text="@string/event_title"
+                android:textColor="@android:color/black"
+                android:textSize="25sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/speakers_header_text"
-        android:text="@string/speakers_header_text"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10sp"/>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/operator_list_view">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/event_time"
+                android:text="@string/no_date"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"/>
 
-    </ListView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/event_summary"
+                android:text="@string/no_information_on_speaker"
+                android:textColor="@android:color/black"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="5dp"/>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:isScrollContainer="false"
+                android:gravity="center">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/location_icon"
+                    android:layout_marginStart="15dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/event_location"
+                    android:text="@string/no_location"
+                    android:textColor="@color/colorPrimary"
+                    android:onClick="launchMap"/>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/speakers_header_text"
+                android:text="@string/speakers_header_text"
+                android:textStyle="italic"
+                android:textSize="15sp"
+                android:textColor="@color/cardview_dark_background"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/speakerRecyclerView"
+                android:isScrollContainer="false">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+
+    </ScrollView>
+
 
 </android.support.v7.widget.LinearLayoutCompat>

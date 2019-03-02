@@ -13,34 +13,36 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+
+const val EVENT_INFO_TAG = "EVENT_INFO"
+val LOGOUT_TAG = "MainActivity.Logout"
 
 /** Event List Page with RecyclerView**/
 class MainActivity : AppCompatActivity() {
-    val testData: Array<String> = arrayOf("event1", "event2", "event3","event4","event5","event6","event7","event8")
     val DEBUG_TAG = "MAINACTIVITY"
-    val LOGOUT_TAG = "MainActivity.Logout"
+
 
     private lateinit var eventListAdapter: RecyclerView.Adapter<*>
     private lateinit var eventListManager: RecyclerView.LayoutManager
-    private lateinit var eventAPI: EventAPI
+    var events: List<EventInfo>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.event_toolbar))
         eventListManager = LinearLayoutManager(this)
-        eventListAdapter = EventCardAdapter(testData, this)
 
-        recycler.apply {
-            setHasFixedSize(true)
-            layoutManager = eventListManager
-            adapter = eventListAdapter
-        }
-        eventListAdapter.notifyDataSetChanged()
     }
 
+    override fun onResume() {
+        super.onResume()
+        EventAPI.getEventData(this, ::eventDataCallback)
+    }
     override fun onBackPressed() {
         super.onBackPressed()
+        supportFragmentManager.popBackStack()
         event_toolbar.event_toolbar.visibility = View.VISIBLE
     }
 
@@ -54,6 +56,8 @@ class MainActivity : AppCompatActivity() {
             R.id.action_logout -> {
                 val logoutIntent = Intent(this, LoginActivity::class.java)
                 logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                logoutIntent.putExtra(LOGOUT_TAG, true)
+                EventAPI.clearAuthentication(this)
                 startActivity(logoutIntent)
                 return true
             } else -> super.onOptionsItemSelected(item)
@@ -74,4 +78,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun eventDataCallback(data: List<EventInfo>?){
+        if(data == null)
+        {
+            Toast.makeText(this, "No Event Data Found", Toast.LENGTH_LONG).show()
+        }
+        events = data
+        eventListAdapter = EventCardAdapter(events, this)
+        recycler.apply {
+            layoutManager = eventListManager
+            adapter = eventListAdapter
+        }
+        eventListAdapter.notifyDataSetChanged()
+    }
+
+companion object {
+    fun processEventDate(event: EventInfo?): String? {
+        if (event != null) {
+            var date: String? = null
+            val startYear = event.start_date_time.substring(2, 4)
+            val startMonth = event.start_date_time.substring(5, 7).trim('0')
+            val startDay = event.start_date_time.substring(8, 10).trim('0')
+            val endYear = event.end_date_time.substring(2, 4)
+            val endMonth = event.end_date_time.substring(5, 7).trim('0')
+            val endDay = event.end_date_time.substring(8, 10).trim('0')
+
+            val startDate = "$startMonth/$startDay/$startYear"
+            val endDate = "$endMonth/$endDay/$endYear"
+
+            val timeFormat = SimpleDateFormat("hh:mm a", Locale.US)
+            val timeParse = SimpleDateFormat("HH:mm", Locale.US)
+            val startTimeUTC = timeParse.parse(event.start_date_time.substring(11, 16))
+            val startTime = timeFormat.format(startTimeUTC).trim('0')
+            val endTimeUTC = timeParse.parse(event.end_date_time.substring(11, 16))
+            val endTime = timeFormat.format(endTimeUTC).trim('0')
+
+            date = if (startDate == endDate) {
+                if (startTime == endTime) {
+                    "$startDate at $startTime"
+                } else {
+                    "$startDate from $startTime - $endTime"
+                }
+            } else {
+                "$startDate $startTime - $endDate $endTime"
+            }
+            return date
+        }
+        else return null
+    }
+}
 }

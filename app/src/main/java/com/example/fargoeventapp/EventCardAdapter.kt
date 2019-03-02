@@ -1,34 +1,24 @@
 package com.example.fargoeventapp
 
-import android.app.PendingIntent.getActivity
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Transformation
+import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.card_event.view.*
 
 /**Binds EventCard views to RecyclerView*/
-class EventCardAdapter(private val eventData: Array<String>, val activity: AppCompatActivity) :
+class EventCardAdapter(private val eventData: List<EventInfo>?, private val activity: AppCompatActivity) :
     RecyclerView.Adapter<EventCardAdapter.EventCardHolder>(){
 
     class EventCardHolder(val eventCard: LinearLayout) : RecyclerView.ViewHolder(eventCard) {
         var title = eventCard.findViewById<TextView>(R.id.eventCardTitle)
         var subtitle = eventCard.findViewById<TextView>(R.id.eventCardInfo)
-        var image = eventCard.findViewById<ImageView>(R.id.eventCardImage)
-        var EventID: Int = 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventCardAdapter.EventCardHolder {
@@ -38,46 +28,37 @@ class EventCardAdapter(private val eventData: Array<String>, val activity: AppCo
     }
 
     override fun onBindViewHolder(holder: EventCardHolder, position: Int) {
-        //TODO feed an event's data to a card
-//        holder.eventCard.eventCardTitle.text = "Event Title"
-//        holder.eventCard.eventCardInfo.text = "event subtitle"
+        if (eventData == null) {
+            return
+        }
 
+        val event = eventData[position]
 
-        Picasso.get().load(R.drawable.not_found_image)
+        Picasso.get().load(event.image_url)
+            .transform(RoundedCornersTransformation(30,0,RoundedCornersTransformation.CornerType.ALL))
             .centerCrop()
             .fit()
             .into(holder.eventCard.eventCardImage)
-
-        holder.title.text = eventData[position]
-        holder.subtitle.text = "subtitle"
-        holder.eventCard.setOnClickListener{
+        holder.title.text = event.title
+        holder.subtitle.text = MainActivity.processEventDate(event)
+        holder.eventCard.setOnClickListener {
+            holder.eventCard.isClickable = false
             val arguments = Bundle()
-            arguments.putInt("EventID", position)
+            arguments.putParcelable(EVENT_INFO_TAG, event)
             val eventPageFragment = EventPageFragment()
             eventPageFragment.arguments = arguments
             val fragmentTransaction = activity.supportFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.main_page_layout,eventPageFragment)
+            fragmentTransaction.add(R.id.main_page_layout, eventPageFragment)
+            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
+            holder.eventCard.isClickable = true
         }
-
-
-
-//            var extras = Bundle()
-//            extras.putString(EVENT_TITLE, "Test Title")
-//            extras.putString(EVENT_DETAILS, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
-//                    "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer " +
-//                    "took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, " +
-//                    "but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised " +
-//                    "in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently " +
-//                    "with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
-//            extras.putStringArray(EVENT_OPERATORS,arrayOf("John Doe", "Jane Smith", "Peter Anderson","Operator 4"))
-//            extras.putParcelable(EVENT_IMAGE, (Bitmap)
-
     }
 
     override fun getItemCount(): Int {
-        //TODO get number of events from databas
+        if(eventData==null) return 0
+
         return eventData.size
     }
 }

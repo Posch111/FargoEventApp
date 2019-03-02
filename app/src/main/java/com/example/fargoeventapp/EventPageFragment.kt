@@ -1,30 +1,34 @@
 package com.example.fargoeventapp
 
 import android.content.Intent
-import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
-import android.widget.TextView
-import android.widget.Toast
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_event.view.*
-
-const val EVENT_ID = "EventID"
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.log
 
 class EventPageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var eventID: Int? = null
+    private var event: EventInfo? = null
+    private lateinit var speakerLayoutManager: RecyclerView.LayoutManager
+    private lateinit var speakerLayoutAdapter: RecyclerView.Adapter<*>
+    var date: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            eventID = it.getInt(EVENT_ID)
+            event = it.getParcelable(EVENT_INFO_TAG)
         }
+
+        speakerLayoutManager = LinearLayoutManager(context)
     }
 
     override fun onCreateView(
@@ -39,10 +43,20 @@ class EventPageFragment : Fragment() {
         toolbar.setNavigationOnClickListener{activity?.onBackPressed()}
         toolbar.inflateMenu(R.menu.menu_main)
         toolbar.setOnMenuItemClickListener { onOptionsItemSelected(it) }
-        Picasso.get().load(R.drawable.not_found_image)
+
+        view.event_page_title.text = event?.title
+        view.event_title.text = event?.title
+        view.event_summary.text = ""
+        view.event_location.text = event?.location
+        view.event_time.text = MainActivity.processEventDate(event)
+
+        Picasso.get().load(event?.image_url)
+            .transform(RoundedCornersTransformation(30,0,RoundedCornersTransformation.CornerType.ALL))
             .fit()
-            .centerCrop()
+            .centerInside()
             .into(view.event_image)
+
+        EventAPI.getSpeakers(view.context,event, this::speakerDataCallback)
 
         activity?.event_toolbar?.visibility = View.INVISIBLE
 
@@ -53,6 +67,8 @@ class EventPageFragment : Fragment() {
         when(item?.itemId){
             R.id.action_logout -> {
                 val logoutIntent = Intent(activity, LoginActivity::class.java)
+                logoutIntent.putExtra(LOGOUT_TAG,true)
+                EventAPI.clearAuthentication(activity as AppCompatActivity)
                 startActivity(logoutIntent)
                 return true
             } else -> super.onOptionsItemSelected(item)
@@ -60,14 +76,26 @@ class EventPageFragment : Fragment() {
         return false
     }
 
+    fun speakerDataCallback(speakerData: Speaker?){
+        if(speakerData == null){
+            speakers_header_text.text =getString(R.string.no_speakers)
+            return
+        }
+        speakerLayoutAdapter = SpeakerListAdapter(speakerData)
+        speakerRecyclerView.apply {
+            layoutManager = speakerLayoutManager
+            adapter = speakerLayoutAdapter
+        }
+        speakerLayoutAdapter.notifyDataSetChanged()
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(eventID: Int) =
             EventPageFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(EVENT_ID, eventID)
+                    putInt(EVENT_INFO_TAG, eventID)
                 }
             }
     }
-
 }
